@@ -1,7 +1,7 @@
 _schema-version: "3.2"
-ID: capire.sflight
+ID: onechain-portal-financeiro
 version: 1.0.0
-description: "CAP sflight demo"
+description: "Portal Financeiro"
 
 parameters:
   enable-parallel-deployments: true
@@ -15,13 +15,13 @@ build-parameters:
 
 modules:
   # --------------------- SERVER MODULE ------------------------
-  - name: sflight-srv
+  - name: portalfinanceiro-srv
   # ------------------------------------------------------------
     type: nodejs
     path: gen/srv
     requires:
-      - name: sflight-db
-      - name: sflight-uaa
+      - name: portalfinanceiro-db
+      - name: portalfinanceiro-uaa
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter, destinations)
         properties:
@@ -31,45 +31,45 @@ modules:
       ignore: ["node_modules/"]
 
   # -------------------- SIDECAR MODULE ------------------------
-  - name: sflight-db-deployer
+  - name: portalfinanceiro-db-deployer
   # ------------------------------------------------------------
     type: hdb
     path: gen/db
     parameters:
       buildpack: nodejs_buildpack
     requires:
-      - name: sflight-db
-      - name: sflight-uaa
+      - name: portalfinanceiro-db
+      - name: portalfinanceiro-uaa
     build-parameters:
       ignore: ["node_modules/"]
 
   # ------------------ APPLICATION CONTENT ---------------------
-  - name: sflight-appcontent
+  - name: portalfinanceiro-appcontent
   # ------------------------------------------------------------
     type: com.sap.application.content
     path: app
     requires:
-      - name: sflight-destination-service
-      - name: sflight-html5-repo-host
+      - name: portalfinanceiro-destination-service
+      - name: portalfinanceiro-html5-repo-host
         parameters:
           content-target: true
     build-parameters:
       build-result: resources
       requires:
-        - name: sflight-app-travel-processor
+        - name: portalfinanceiro-app-travel-processor
           artifacts:
             - travel-processor.zip
           target-path: resources/
-      #  - name: sflight-app-travel-analytics
+      #  - name: portalfinanceiro-app-travel-analytics
       #    artifacts:
       #      - travel-analytics.zip
       #    target-path: resources/
 
   # ------------- APPLICATION: TRAVEL PROCESSOR ----------------
-  - name: sflight-app-travel-processor
+  - name: portalfinanceiro-app-travel-processor
   # ------------------------------------------------------------
     type: html5
-    path: app/travel_processor
+    path: app/onechain-contasreceber-cliente
     build-parameters:
       build-result: dist
       builder: custom
@@ -79,7 +79,7 @@ modules:
       supported-platforms: []
 
   # ------------- APPLICATION: TRAVEL ANALYTICS ----------------
-  #- name: sflight-app-travel-analytics
+  #- name: portalfinanceiro-app-travel-analytics
   # ------------------------------------------------------------
   #  type: html5
   #  path: app/travel_analytics
@@ -92,21 +92,21 @@ modules:
   #    supported-platforms: []
 
   # ------------------ DESTINATION CONTENT ---------------------
-  - name: sflight-destinationcontent
+  - name: portalfinanceiro-destinationcontent
   # ------------------------------------------------------------
     type: com.sap.application.content
     build-parameters:
       no-source: true
     requires:
-      - name: sflight-uaa
+      - name: portalfinanceiro-uaa
         parameters:
           service-key:
-            name: sflight-uaa-key
-      - name: sflight-html5-repo-host
+            name: portalfinanceiro-uaa-key
+      - name: portalfinanceiro-html5-repo-host
         parameters:
           service-key:
-            name: sflight-html5-repo-host-key
-      - name: sflight-destination-service
+            name: portalfinanceiro-html5-repo-host-key
+      - name: portalfinanceiro-destination-service
         parameters:
           content-target: true
     parameters:
@@ -114,19 +114,19 @@ modules:
         instance:
           existing_destinations_policy: update
           destinations:
-            - Name: sflight-html5-repository
-              ServiceInstanceName: sflight-html5-repo-host
-              ServiceKeyName: sflight-html5-repo-host-key
-              sap.cloud.service: sap.fe.cap.sflight
-            - Name: sflight-uaa
+            - Name: portalfinanceiro-html5-repository
+              ServiceInstanceName: portalfinanceiro-html5-repo-host
+              ServiceKeyName: portalfinanceiro-html5-repo-host-key
+              sap.cloud.service: sap.fe.cap.portalfinanceiro
+            - Name: portalfinanceiro-uaa
               Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: sflight-uaa
-              ServiceKeyName: sflight-uaa-key
-              sap.cloud.service: sap.fe.cap.sflight
+              ServiceInstanceName: portalfinanceiro-uaa
+              ServiceKeyName: portalfinanceiro-uaa-key
+              sap.cloud.service: sap.fe.cap.portalfinanceiro
 
 resources:
   # ------------------------------------------------------------
-  - name: sflight-db
+  - name: portalfinanceiro-db
   # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
@@ -136,32 +136,32 @@ resources:
       hdi-service-name: ${service-name}
 
   # ------------------------------------------------------------
-  - name: sflight-uaa
+  - name: portalfinanceiro-uaa
   # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
-      path: ./app/travel_processor/xs-security.json
+      path: ./app/onechain-contasreceber-cliente/xs-security.json
       config:
-        xsappname: sflight-${space}
+        xsappname: portalfinanceiro-${space}
         tenant-mode: dedicated
         role-collections:
-          - name: 'sflight-reviewer-${space}'
+          - name: 'portalfinanceiro-reviewer-${space}'
             description: Review travels
             role-template-references:
               - $XSAPPNAME.reviewer
-          - name: 'sflight-processor-${space}'
+          - name: 'portalfinanceiro-processor-${space}'
             description: Process travels
             role-template-references:
               - $XSAPPNAME.processor
-          - name: 'sflight-admin-${space}'
+          - name: 'portalfinanceiro-admin-${space}'
             description: Manage travels
             role-template-references:
               - $XSAPPNAME.admin
 
   # ------------------------------------------------------------
-  - name: sflight-html5-repo-runtime
+  - name: portalfinanceiro-html5-repo-runtime
   # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
@@ -169,7 +169,7 @@ resources:
       service-plan: app-runtime
 
   # ------------------------------------------------------------
-  - name: sflight-html5-repo-host
+  - name: portalfinanceiro-html5-repo-host
   # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     parameters:
@@ -177,7 +177,7 @@ resources:
       service-plan: app-host
 
   # ------------------------------------------------------------
-  - name: sflight-destination-service
+  - name: portalfinanceiro-destination-service
   # ------------------------------------------------------------
     type: org.cloudfoundry.managed-service
     requires:
@@ -192,7 +192,7 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
-              - Name: sflight-srv
+              - Name: portalfinanceiro-srv
                 URL: ~{srv-api/srv-url}
                 Authentication: NoAuthentication
                 Type: HTTP

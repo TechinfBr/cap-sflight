@@ -1,4 +1,4 @@
-package com.sap.cap.sflight.processor;
+package com.sap.cap.portalfinanceiro.processor;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;

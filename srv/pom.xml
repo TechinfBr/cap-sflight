@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>sflight</artifactId>
+    <artifactId>portalfinanceiro</artifactId>
     <groupId>com.sap.cap</groupId>
     <version>${revision}</version>
   </parent>

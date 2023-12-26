@@ -1,3 +1,3 @@
-using from './travel_processor/capabilities';
-using from './travel_processor/field-control';
-using from './travel_processor/layouts';
+using from './onechain-contasreceber-cliente/capabilities';
+using from './onechain-contasreceber-cliente/field-control';
+using from './onechain-contasreceber-cliente/layouts';

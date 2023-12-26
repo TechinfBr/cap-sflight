@@ -5,7 +5,7 @@
     {
       "source": "^/processor/(.*)$",
       "target": "/processor/$1",
-      "destination": "sflight-srv",
+      "destination": "portalfinanceiro-srv",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },

@@ -1,4 +1,4 @@
-package com.sap.cap.sflight.processor;
+package com.sap.cap.portalfinanceiro.processor;
 
 import static cds.gen.travelservice.TravelService_.BOOKING;
 import static cds.gen.travelservice.TravelService_.BOOKING_SUPPLEMENT;

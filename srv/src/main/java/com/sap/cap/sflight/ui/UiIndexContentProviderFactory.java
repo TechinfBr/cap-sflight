@@ -1,4 +1,4 @@
-package com.sap.cap.sflight.ui;
+package com.sap.cap.portalfinanceiro.ui;
 
 import java.io.PrintWriter;
 
@@ -41,7 +41,7 @@ public class UiIndexContentProviderFactory implements IndexContentProviderFactor
 		@Override
 		public void writeContent(PrintWriter writer, String contextPath) {
 			writer.print(ENDPOINT_START);
-			writer.printf(ENDPOINT, contextPath + "/travel_processor/webapp/index.html", "Travel Processor UI");
+			writer.printf(ENDPOINT, contextPath + "/onechain-contasreceber-cliente/webapp/index.html", "Travel Processor UI");
 			writer.printf(ENDPOINT, contextPath + "/travel_analytics/webapp/index.html", "Travel Analytics UI");
 			writer.print(ENDPOINT_END);
 		}
